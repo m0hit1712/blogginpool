@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogging pool</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!-- Bootstrap core CSS -->
+    <link
+      rel="stylesheet"
+      href="{% static 'bootstrap_material_design/css/bootstrap.min.css' %}"
+    />
+    <!-- Material Design Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="{% static 'bootstrap_material_design/css/mdb.min.css' %}"
+    />
+    <!-- Your custom styles (optional) -->
+    <script src="{% static 'bootstrap_material_design/js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/blog_base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/blog_writers_dashboard.css' %}" />
+  </head>
+  <body>
+    <section>
+      <nav
+        class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark"
+        style="border-bottom: 3px solid #4285f4"
+      >
+        <img
+          class="mr-1"
+          style="width: 60px; height: 60px"
+          src="{% static 'images/logo.png' %}"
+        />
+        <a class="navbar-brand" href="{% url 'index' %}"
+          ><b>
+            <h2>
+              <b><span style="color: #4285f4">B</span>loggingpool</b>
+            </h2>
+          </b></a
+        >
+        <button
+          class="navbar-toggler collapsed"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            {% if loggedin %}
+            <li class="nav-item my-2">
+              <a class="my-nav-link" href="{% url 'writers_dashboard' %}">Dashboard</a>
+            </li>
+            {% endif %}
+            <li class="nav-item my-2">
+              <a class="my-nav-link" href="{% url 'main_blog_page' %}">Blogs</a>
+            </li>
+            <li class="nav-item my-2">
+              <a class="my-nav-link" href="#">About us</a>
+            </li>
+            <li class="nav-item my-2">
+              <a class="my-nav-link" href="#">Contact us</a>
+            </li>
+          </ul>
+          {% if not index and not dashboard %}
+          <div
+            class="input-group mr-auto md-form form-sm form-2 pl-0"
+            id="search_bar"
+            style="width: 300px"
+          >
+            <input
+              class="form-control my-0 py-1 w-75"
+              style="border: 2px solid #4285f4; color: white"
+              onkeyup="search_it()"
+              id="search_input"
+              name="search"
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <div class="input-group-append ml-1" onclick="search_in_depth()">
+              <span
+                class="input-group-text"
+                style="
+                  color: white;
+                  background-color: #4285f4;
+                  border: 2px solid #4285f4;
+                "
+              >
+                <i class="fa fa-search text-grey" aria-hidden="true"></i>
+              </span>
+            </div>
+            <br />
+            <div
+              class="dropdown position-fixed"
+              id="drop_down"
+              style="margin-top: 40px"
+            >
+              <button
+                style="visibility: hidden"
+                id="hidden_btn"
+                class="btn dropdown-toggle move"
+                data-toggle="dropdown"
+              ></button>
+            </div>
+          </div>
+          {% endif %}
+          {% if loggedin %}
+            <a
+              id="profile"
+              class="mt-2 mr-4 p-2 float-right"
+              href="{% url 'profile' %}" 
+              data-mdb-toggle="tooltip" 
+              data-mdb-placement="top" 
+              title="{{username}}" 
+              >
+              <img src="https://img.icons8.com/bubbles/50/000000/edit-user.png"/>
+            </a>
+            <a
+              id="logout"
+              class="btn btn-primary mr-5 p-2 mt-3"
+              href="{% url 'del' %}"
+              >logout</a>
+          {% else %}
+            <a
+              id="register"
+              class="btn btn-primary p-2 mr-4 mt-2"
+              href="{% url 'register' %}"
+              >register</a
+            >
+            <a
+              id="login"
+              class="btn btn-primary mr-5 p-2 mt-2"
+              href="{% url 'login' %}"
+              >login</a>
+          {% endif %}
+        </>
+      </nav>
+    </section>
+
+    <div class="container-fluid justify-content-center ml-0 mr-0 p-0 mt-0" id="page-container">
+      <br />
+      {% block content %} {% endblock content %}
+    </div>
+
+    <footer id="sticky-footer" class="py-4 mt-5 bg-dark text-white-50">
+      <div class="container text-center text-decoration-none">
+        <small
+          >&copy; 2021 Copyright:<a href="{% url 'index' %}">
+            blogpool.herokuapp.com
+          </a></small
+        >
+      </div>
+    </footer>
+  </body>
+</html>

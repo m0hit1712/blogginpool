@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>LOGIN</title>
+</head>
+<style>
+    body {
+        background-image: linear-gradient(to right, #000428 , #031b4d);
+    }
+</style>
+<body>
+
+{% if verified %}
+<script>
+    alert("Your account is verified successfully now you can login");
+    window.location.replace("{% url 'login' %}");
+</script>
+{% else %}
+{{msg}}
+{% endif %}
+
+</body>
+</html>
+
+

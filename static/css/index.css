@@ -1,0 +1,25 @@
+.big-t {
+  font-size: 35px;
+}
+.small-t {
+  padding-right: 200px;
+  padding-left: 200px;
+}
+@media only screen and (max-width: 1000px) {
+  .big-t {
+    font-size: 30px;
+  }
+  .small-t {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .big-t {
+    font-size: 25px;
+  }
+  #image_1 {
+    padding-bottom: 0px;
+  }
+}
