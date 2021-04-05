@@ -4,8 +4,6 @@ var tag_list = [];
 $("#add_tag_from_select").click(function () {
   var tag_name = $("#select_tag option:selected").text();
   $("#select_tag option[value='Select']").attr("selected", true);
-  console.log(tag_name);
-
   var check = true;
   $("#tags_div")
     .children()
@@ -15,7 +13,7 @@ $("#add_tag_from_select").click(function () {
         check = false;
       }
     });
-  
+
   if (
     tag_name != "Select" &&
     tag_list.length < 10 &&
@@ -52,13 +50,13 @@ $("#add_tag_from_select").click(function () {
       $("#tag_limit_warning").css("display", "none");
     }, 4000);
   }
-    if (check == false) {
-      $("#tag_limit_warning").text("This tag is already selected");
-      $("#tag_limit_warning").css("display", "block");
-      setTimeout(function () {
-        $("#tag_limit_warning").css("display", "none");
-      }, 4000);
-    }
+  if (check == false) {
+    $("#tag_limit_warning").text("This tag is already selected");
+    $("#tag_limit_warning").css("display", "block");
+    setTimeout(function () {
+      $("#tag_limit_warning").css("display", "none");
+    }, 4000);
+  }
 });
 
 //This function add the tag into the tag div from input tag
@@ -101,7 +99,9 @@ $("#add_tag_from_input").click(function () {
     }, 4000);
   }
   if (!/^[A-Za-z0-9_-]*$/.test(tag_name)) {
-    $("#tag_limit_warning").text("only english words allowed without space you can use _ at the place of space(' ')");
+    $("#tag_limit_warning").text(
+      "only english words allowed without space you can use _ at the place of space(' ')"
+    );
     $("#tag_limit_warning").css("display", "block");
     setTimeout(function () {
       $("#tag_limit_warning").css("display", "none");
@@ -171,24 +171,27 @@ function save_as_draft_func(id) {
     var editor = CKEDITOR.instances["editor"].getData();
     var img_url = $("#banner_image_url").val();
     $.ajax({
-      url: "save_draft",
+      url: `/create/save_draft`,
       data: {
         img_url: img_url,
         tags: tags_string,
         editor: editor,
         heading: heading,
+        existing_blog: true,
+        blog_id: main_blog_id,
       },
       async: true,
       dataType: "json",
       success: function (data) {
         if ("saved" in data) {
+          alert(id);
           if (id == "preview") {
             //open an new browser window for blog preview (id is coming from the server stored in data)
-            var url_mask1 = `/blog/preview/${data["id"].toString()}`
+            var url_mask1 = `/blog/preview/${data["id"].toString()}`;
             var win = window.open(
               url_mask1,
               "Popup Window",
-              "width=1100, height=800, top=40, left=10, resizable=1, menubar=yes",
+              "width=1100, height=800, top=40, left=10, resizable=1, menubar=yes"
             );
 
             //locate the current window to edit blog with passing id
@@ -207,3 +210,10 @@ function save_as_draft_func(id) {
     });
   }
 }
+
+
+
+
+
+
+
