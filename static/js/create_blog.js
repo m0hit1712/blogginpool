@@ -15,7 +15,8 @@ $("#add_tag_from_select").click(function () {
         check = false;
       }
     });
-  if (tag_name != "Select" && tag_list.length < 10 && check) {
+  
+  if (tag_name != "Select" && tag_list.length < 10 && check && /^[A-Za-z]+$/.test(tag_name)) {
     var id = "tag_" + tag_name + "_safe";
     $("#tags_div").append(
       '<button type="button" id="' +
@@ -36,13 +37,23 @@ $("#add_tag_from_select").click(function () {
       $("#tag_limit_warning").css("display", "none");
     }, 4000);
   }
-  if (check == false) {
-    $("#tag_limit_warning").text("This tag is already selected");
+
+  if (!/^[A-Za-z0-9_-]*$/.test(tag_name)) {
+    $("#tag_limit_warning").text(
+      "only english words allowed without space you can use _ at the place of space(' ')"
+    );
     $("#tag_limit_warning").css("display", "block");
     setTimeout(function () {
       $("#tag_limit_warning").css("display", "none");
     }, 4000);
   }
+    if (check == false) {
+      $("#tag_limit_warning").text("This tag is already selected");
+      $("#tag_limit_warning").css("display", "block");
+      setTimeout(function () {
+        $("#tag_limit_warning").css("display", "none");
+      }, 4000);
+    }
 });
 
 //This function add the tag into the tag div from input tag
@@ -59,7 +70,7 @@ $("#add_tag_from_input").click(function () {
         check = false;
       }
     });
-  if (tag_name != "" && tag_list.length < 10 && check) {
+  if (tag_name != "" && tag_list.length < 10 && check && /^[A-Za-z]+$/.test(tag_name)) {
     var id = "tag_" + tag_name + "_safe";
     $("#tags_div").append(
       '<button type="button" id="' +
@@ -74,6 +85,13 @@ $("#add_tag_from_input").click(function () {
   }
   if (tag_list.length >= 10) {
     $("#tag_limit_warning").text("Tag limit exceed");
+    $("#tag_limit_warning").css("display", "block");
+    setTimeout(function () {
+      $("#tag_limit_warning").css("display", "none");
+    }, 4000);
+  }
+  if (!/^[A-Za-z0-9_-]*$/.test(tag_name)) {
+    $("#tag_limit_warning").text("only english words allowed without space you can use _ at the place of space(' ')");
     $("#tag_limit_warning").css("display", "block");
     setTimeout(function () {
       $("#tag_limit_warning").css("display", "none");
@@ -118,14 +136,6 @@ function submit_blog_form() {
     }
   }
   $("#hidden_input_tags").val(tags_string);
-  var editor = $($.parseHTML(CKEDITOR.instances["editor"].getData()));
-  img_url = editor.find("img").attr("src");
-  if (img_url == null) {
-    img_url = "None";
-  }
-  $("#hidden_banner_url").val(img_url);
-  var category = $("button[data-id = select_category]").attr("title");
-  $("#category_name").val(category.toString());
   $("#blog-form").submit();
   alert("Your blog is successfully sent to be published");
 }
@@ -148,14 +158,8 @@ function save_as_draft_func(id) {
     }, 4000);
   } else {
     var heading = $("#blog_heading").val();
-    var description = $("#description").val();
-    var category = $('[data-id="select_category"] > div > div > div').text();
     var editor = CKEDITOR.instances["editor"].getData();
-    var editor2 = $($.parseHTML(CKEDITOR.instances["editor"].getData()));
-    img_url = editor2.find("img").attr("src");
-    if (img_url == null) {
-      img_url = "None";
-    }
+    var img_url = $("#banner_image_url").val();
     $.ajax({
       url: "save_draft",
       data: {
@@ -163,8 +167,6 @@ function save_as_draft_func(id) {
         tags: tags_string,
         editor: editor,
         heading: heading,
-        category: category,
-        description: description,
       },
       async: true,
       dataType: "json",
@@ -172,28 +174,21 @@ function save_as_draft_func(id) {
         if ("saved" in data) {
           if (id == "preview") {
             //open an new browser window for blog preview (id is coming from the server stored in data)
-            var url_mask1 = "{% url 'blog_preview' id_=12345 %}".replace(
-              /12345/,
-              data["id"].toString()
-            );
+            var url_mask1 = `/blog/preview/${data["id"].toString()}`
             var win = window.open(
               url_mask1,
               "Popup Window",
               "width=1100, height=800, top=40, left=10, resizable=1, menubar=yes",
-              true
             );
 
             //locate the current window to edit blog with passing id
-            var url_mask2 = "{% url 'edit_blog' id_=12345 %}".replace(
-              /12345/,
-              data["id"].toString()
-            );
+            var url_mask2 = `/edit/blog/${data["id"].toString()}`;
             window.location.replace(url_mask2);
 
             win.focus();
           } else {
             alert("blog is saved successfully");
-            window.location.replace("{% url 'writers_dashboard' %}");
+            window.location.replace("/dashboard/writer");
           }
         } else {
           alert("something went wrong please try again");

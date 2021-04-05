@@ -13,5 +13,5 @@ urlpatterns = [
     path('create/save_draft', views.save_draft, name='save_draft_create'),
     path('dashboard/search', views.blog_search_bar, name='search_blog'),
     path('search', views.blog_search_bar, name='search_blog'),
-    path('<str:name>', views.tag_blogs, name='tag_blogs'),
+    path('tag/<str:name>', views.tag_blogs, name='tag_blogs'),
 ]

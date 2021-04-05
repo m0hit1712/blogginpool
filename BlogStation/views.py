@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
-from AuthenticationAndVerification.models import *
+from AuthenticationAndVerification.models import User
 from .models import TagModel, BlogModel, CommentModel
+from django.http import JsonResponse
+from django.utils import timezone
+
 
 # Create your views here.
 
@@ -47,20 +50,66 @@ def create_blog(request):
                         tags = TagModel.objects.all()
                         context["tags"] = tags
                         context["languages"] = ['']
+                
+                if request.method == 'POST':
+                        print(request.POST)
+                        image_url = request.POST["banner_image_url"]
+                        heading = request.POST["blog_heading"]
+                        body = request.POST["editor"]
+                        written_by = user.first_name+" "+user.last_name
+                        tags_came = tags_came = request.POST["tags"].split(',')
+                        tags = [tag.name for tag in TagModel.objects.all()]
+
+                        blog_model = BlogModel.objects.create(draft=False, heading=heading, body=body, date=timezone.now(), written_by=written_by, banner_image_url=image_url)
+
+                        for tag_came in tags_came:
+                                if tag_came not in tags and tag_came is not '':
+                                        tag_obj = TagModel.objects.create(name=tag_came)
+                                        blog_model.tag_model.add(tag_obj)
+                                else:
+                                        tag_obj = TagModel.objects.filter(name=tag_came).first()
+                                        blog_model.tag_model.add(tag_obj)
+
 
         return render(request, 'BlogStation/create_blog.html', context)
 
-def edit_blog(request, id):
+def save_draft(request):
+        user = User.objects.all().filter(username=request.session['log_key']).first()
+        tags_came = request.GET["tags"].split(',')
+        content_came = request.GET["editor"]
+        heading_came = request.GET["heading"]
+        img_url = request.GET['img_url']
+
+        tags = [tag.name for tag in TagModel.objects.all()]
+
+        written_by = user.first_name+" "+user.last_name
+        blog_model = BlogModel.objects.create(heading=heading_came, body=content_came, date=timezone.now(), written_by=written_by, banner_image_url=img_url)
+
+        for tag_came in tags_came:
+                if tag_came not in tags and tag_came is not '':
+                        tag_obj = TagModel.objects.create(name=tag_came)
+                        blog_model.tag_model.add(tag_obj)
+                else:
+                        tag_obj = TagModel.objects.filter(name=tag_came).first()
+                        blog_model.tag_model.add(tag_obj)
+
+        blog_model.save()
+        return JsonResponse({"saved": True, "id": blog_model.id})
+
+def edit_blog(request, id_):
         context = {}
         return render(request, 'BlogStation/edit_blog.html', context)
 
-def blog_preview(request):
+def blog_preview(request, id_):
         context = {}
+        if "log_key" in request.session:
+                context["authenticated"] = True
+
+        blog = BlogModel.objects.all().filter(id=int(id_)).first()
+        context["blog"] = blog
         return render(request, 'BlogStation/blog_preview.html', context)
 
-def save_draft(request):
-        context = {}
-        return render(request, 'BlogStation/save_draft.html', context)
+
 
 def blog_search_bar(request):
         pass
