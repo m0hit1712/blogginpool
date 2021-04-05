@@ -11,6 +11,7 @@ class TagModel(models.Model):
 
 class BlogModel(models.Model):
         heading = models.TextField(max_length=80)
+        description = models.TextField(max_length=500, null=True ,blank=True)
         body = RichTextField(blank=True)
         written_by = models.CharField(max_length=30)
         date = models.DateTimeField(auto_now_add=True)

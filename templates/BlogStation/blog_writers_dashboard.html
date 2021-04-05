@@ -103,7 +103,7 @@
                                 $("#blogs_container").append("<div class='col-sm shadow p-0 ml-auto mr-auto mt-5' id='"+card_id+"' style='max-width: 16rem; min-width: 16rem; max-height: 390px; min-height: 390px;'></div>");
                                 var card_id_inner = "inner_"+"{{blog.id}}";
                                 $("#"+card_id).append("<div class='card border-0 p-0 m-0' style='width: 100%;' id='"+card_id_inner+"'></div>")
-                                var image = "{{blog.image_url}}";
+                                var image = "{{blog.banner_image_url}}";
                                 $("#"+card_id_inner).append("<div class='card_image embed-responsive embed-responsive-16by9 border'><img class='card-img-top embed-responsive-item' src='"+image+"' alt='Card image cap'></div>")
                                 $("#"+card_id_inner).append("<div class='container p-2 card_content'><h6 class='text-justify' style='max-height: 50px; min-height: 50px; overflow-y: hidden; '>"+`{{blog.heading}}`+"</h6><hr class='m-2'><p class='text-justify scroll_para' style='max-height: 100px; min-height: 100px; font-size: 13px; overflow-y: scroll;'>"+`{{blog.description}}`+"</p></div>");
                                 var id = "{{blog.id}}";

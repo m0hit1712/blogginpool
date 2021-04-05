@@ -26,7 +26,7 @@ def main_blog_page(request):
                 context["id"] = user.id
         return render(request, 'BlogStation/main_blog_page.html', context)
 
-def blog_view(request, id):
+def blog_view(request, id_):
         context = {}
         return render(request, 'BlogStation/blog_view.html', context)
 
@@ -37,6 +37,9 @@ def blog_writers_dashboard(request):
                 context["loggedin"] = True
                 user = User.objects.filter(username=request.session["log_key"]).first()
                 context["id"] = user.id
+                written_by = user.first_name+" "+user.last_name
+                blogs = BlogModel.objects.filter(written_by=written_by)
+                context["blogs"] = blogs
         else:
                 return redirect('login')
         return render(request, 'BlogStation/blog_writers_dashboard.html', context)

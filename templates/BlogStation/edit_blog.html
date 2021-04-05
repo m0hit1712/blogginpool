@@ -224,11 +224,6 @@
     <script type="text/javascript"src="{% static 'js/edit_blog.js' %}"></script>
     {% if blog %}
     <script>
-        var stringToHTML = function(str) {
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(str, 'text/html');
-            return doc.body.innerHTML;
-        };
         function load_data() { 
             $("#blog_heading").val(`{{blog.heading}}`);
             $("#banner_image_url").val(`{{blog.banner_image_url}}`);
