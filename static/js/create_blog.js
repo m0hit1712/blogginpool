@@ -170,6 +170,7 @@ function save_as_draft_func(id) {
     var heading = $("#blog_heading").val();
     var editor = CKEDITOR.instances["editor"].getData();
     var img_url = $("#banner_image_url").val();
+    var description = $("#description").val();
     $.ajax({
       url: "save_draft",
       data: {
@@ -177,6 +178,7 @@ function save_as_draft_func(id) {
         tags: tags_string,
         editor: editor,
         heading: heading,
+        description: description,
       },
       async: true,
       dataType: "json",

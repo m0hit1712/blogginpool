@@ -170,6 +170,7 @@ function save_as_draft_func(id) {
     var heading = $("#blog_heading").val();
     var editor = CKEDITOR.instances["editor"].getData();
     var img_url = $("#banner_image_url").val();
+    var description = $("#description").val();
     $.ajax({
       url: `/create/save_draft`,
       data: {
@@ -179,12 +180,12 @@ function save_as_draft_func(id) {
         heading: heading,
         existing_blog: true,
         blog_id: main_blog_id,
+        description: description,
       },
       async: true,
       dataType: "json",
       success: function (data) {
         if ("saved" in data) {
-          alert(id);
           if (id == "preview") {
             //open an new browser window for blog preview (id is coming from the server stored in data)
             var url_mask1 = `/blog/preview/${data["id"].toString()}`;

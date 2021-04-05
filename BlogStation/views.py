@@ -58,11 +58,12 @@ def create_blog(request):
                         image_url = request.POST["banner_image_url"]
                         heading = request.POST["blog_heading"]
                         body = request.POST["editor"]
+                        description_came = request.POST["description"]
                         written_by = user.first_name+" "+user.last_name
                         tags_came = tags_came = request.POST["tags"].split(',')
                         tags = [tag.name for tag in TagModel.objects.all()]
 
-                        blog_model = BlogModel.objects.create(draft=False, heading=heading, body=body, date=timezone.now(), written_by=written_by, banner_image_url=image_url)
+                        blog_model = BlogModel.objects.create(descrption=description_came, draft=False, heading=heading, body=body, date=timezone.now(), written_by=written_by, banner_image_url=image_url)
 
                         for tag_came in tags_came:
                                 if tag_came not in tags and tag_came is not '':
@@ -81,6 +82,7 @@ def save_draft(request):
         content_came = request.GET["editor"]
         heading_came = request.GET["heading"]
         img_url = request.GET['img_url']
+        description_came = request.GET["description"]
 
         tags = [tag.name for tag in TagModel.objects.all()]
 
@@ -93,10 +95,11 @@ def save_draft(request):
                 blog_model.body = content_came
                 blog_model.date = timezone.now()
                 blog_model.written_by = written_by
+                blog_model.description = description_came
                 blog_model.banner_image_url = img_url
                 blog_model.tag_model.clear()
         else:
-                blog_model = BlogModel.objects.create(heading=heading_came, body=content_came, date=timezone.now(), written_by=written_by, banner_image_url=img_url)
+                blog_model = BlogModel.objects.create(description=description_came,heading=heading_came, body=content_came, date=timezone.now(), written_by=written_by, banner_image_url=img_url)
 
         for tag_came in tags_came:
                 if tag_came not in tags and tag_came is not '':
@@ -126,6 +129,7 @@ def edit_blog(request, id_):
                         image_url = request.POST["banner_image_url"]
                         heading = request.POST["blog_heading"]
                         body = request.POST["editor"]
+                        description_came = request.POST["description"]
                         written_by = user.first_name+" "+user.last_name
                         tags_came = tags_came = request.POST["tags"].split(',')
                         tags = [tag.name for tag in TagModel.objects.all()]
@@ -133,6 +137,7 @@ def edit_blog(request, id_):
                         blog_model = BlogModel.objects.filter(id=id_).first()
                         blog_model.heading = heading
                         blog_model.body = body
+                        blog_model.description = description_came
                         blog_model.date = timezone.now()
                         blog_model.written_by = written_by
                         blog_model.banner_image_url = image_url

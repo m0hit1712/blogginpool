@@ -86,7 +86,7 @@
         <h1 class="pl-3 mt-3" style="font-weight: bold;">Published blogs</h1>
         <hr>
         <div class="row p-0 m-0" id="blogs_container">
-                {% if not published%}
+                {% if not blogs %}
                         <div class='container w-100' align='center' style='height: 300px; background-color: #A2A2A2;'>
                                 <p style='margin-top: 100px;'>You don't have any pulished blogs <br> right now<br> :)</p>
                                 <a href="{% url 'create_blog' %}" type='button' class='btn btn-dark'>CREATE ONE</a>
