@@ -17,13 +17,12 @@ def webhook(request):
             response.message(msg)
             return HttpResponse(response.to_xml(), content_type='text/xml')
 
-        
-        message = request.POST.get("Body")
-        check_message(message)
+        else:
+            pass
 
         media = request.POST.get("MediaUrl0")
         print(request.POST)
-        response.message('just checking from where the reply is coming you said: ' + message)
+        response.message('Next procedure and user controls are under development,\nyou said: ' + message)
     return HttpResponse(response.to_xml(), content_type='text/xml')
 
 # support functions
