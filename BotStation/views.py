@@ -89,14 +89,7 @@ def temp_register_user(number, msg):
                 user_clone = UserClone.objects.filter(contact_no =number).first()
                 user_clone.password = password
                 user_clone.save()
-                msg = f"""
-                These are your details:\n\n\n
-First Name: {user_clone.first_name}\n
-Last Name: {user_clone.last_name}\n
-Email: {user_clone.email}\n
-Password: {user_clone.password}\n
-    Do you want to save these details answers in yes or no
-                """
+                msg = f"""These are your details:\n\n\n First Name: {user_clone.first_name}\n Last Name: {user_clone.last_name}\n Email: {user_clone.email}\n Password: {user_clone.password}\n Do you want to save these details answers in yes or no"""
                 tmp_user.last_outgoing = "details_sent"
                 tmp_user.save()
             else:
