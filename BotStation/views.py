@@ -41,7 +41,7 @@ def temp_register_user(number, msg):
         tmp_user = TempUserMessage.objects.create(number=number)
         tmp_user.last_outgoing = "registration"
         tmp_user.save()
-        msg = """*Hey There! \n Welcome To Bloggingpool* You can visit us here: https://blogpool.herokuapp.com/\n\n\n\n Do you want to start registration procedure? \n Registration is required to use our service.\n answer with yes/no"""
+        msg = """Hey There! \n *Welcome To Bloggingpool* You can visit us here: https://blogpool.herokuapp.com/\n\n\nDo you want to start registration procedure?\nRegistration is required to use our service.\nanswer with yes/no"""
 
     else:
         if tmp_user.last_outgoing == "registration":
@@ -89,7 +89,7 @@ def temp_register_user(number, msg):
                 user_clone = UserClone.objects.filter(contact_no =number).first()
                 user_clone.password = password
                 user_clone.save()
-                msg = f"""These are your details:\n\n\n First Name: {user_clone.first_name}\n Last Name: {user_clone.last_name}\n Email: {user_clone.email}\n Password: {user_clone.password}\n Do you want to save these details answers in yes or no"""
+                msg = f"""These are your details:\n\n\nFirst Name: {user_clone.first_name}\nLast Name: {user_clone.last_name}\nEmail: {user_clone.email}\nPassword: {user_clone.password}\nDo you want to save these details answers in yes or no"""
                 tmp_user.last_outgoing = "details_sent"
                 tmp_user.save()
             else:
@@ -122,7 +122,7 @@ def temp_register_user(number, msg):
                 user_clone = UserClone.objects.filter(contact_no =number).first()
                 user = User.objects.create(contact_no=number,email=user_clone.email, username=user_clone.email ,password=user_clone.password, first_name=user_clone.first_name, last_name=user_clone.last_name)
                 user.save()
-                msg = f"Welcome {user_clone.first_name}, Your data is saved successfully! \n Now you can use our services"
+                msg = f"Welcome {user_clone.first_name}, Your data is saved successfully!\nNow you can use our services"
                 tmp_user.last_outgoing = "registered"
                 tmp_user.save()
 
