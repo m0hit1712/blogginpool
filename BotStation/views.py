@@ -9,7 +9,7 @@ def webhook(request):
     if request.method == "POST":
         message = request.POST.get("Body")
         print(message)
-        response.message('You said: ' + message)
+        response.message('just checking from where the reply is coming you said: ' + message)
     return HttpResponse(response.to_xml(), content_type='text/xml')
 
 
