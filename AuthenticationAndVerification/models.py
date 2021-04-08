@@ -14,6 +14,7 @@ class About(models.Model):
 class User(models.Model):
         username = models.CharField(max_length=200)
         password = models.CharField(max_length=30)
+        contact_no = models.CharField(max_length=14, null=True)
         first_name = models.CharField(max_length=30)
         last_name = models.CharField(max_length=30)
         email = models.CharField(max_length=100, null=False, blank=False, default=None)
