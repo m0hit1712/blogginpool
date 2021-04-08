@@ -41,7 +41,7 @@ def temp_register_user(number, msg):
         tmp_user = TempUserMessage.objects.create(number=number)
         tmp_user.last_outgoing = "registration"
         tmp_user.save()
-        msg = """*Hey There! \n Welcome To Bloggingpool*\n Do you want to start registration procedure? \n Registration is required to use our service.\n answer with yes/no"""
+        msg = """*Hey There! \n Welcome To Bloggingpool* You can visit us here: https://blogpool.herokuapp.com/\n\n\n\n Do you want to start registration procedure? \n Registration is required to use our service.\n answer with yes/no"""
 
     else:
         if tmp_user.last_outgoing == "registration":
