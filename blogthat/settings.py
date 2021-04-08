@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'BlogStation',
     'ckeditor',
     'AuthenticationAndVerification',
+    'BotStation',
+    
 ]
 
 MIDDLEWARE = [

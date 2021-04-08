@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('BlogStation.urls')),
     path('auth/', include('AuthenticationAndVerification.urls')),
+    path('bot', include('BotStation.urls')),
 ]
