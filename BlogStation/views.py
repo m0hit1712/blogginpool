@@ -63,7 +63,7 @@ def create_blog(request):
                         tags_came = tags_came = request.POST["tags"].split(',')
                         tags = [tag.name for tag in TagModel.objects.all()]
 
-                        blog_model = BlogModel.objects.create(descrption=description_came, draft=False, heading=heading, body=body, date=timezone.now(), written_by=written_by, banner_image_url=image_url)
+                        blog_model = BlogModel.objects.create(description=description_came, draft=False, heading=heading, body=body, date=timezone.now(), written_by=written_by, banner_image_url=image_url)
 
                         for tag_came in tags_came:
                                 if tag_came not in tags and tag_came is not '':

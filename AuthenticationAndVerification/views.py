@@ -208,10 +208,12 @@ def reset_password(request, uname_b64, token):
     return render(request, 'AuthenticationAndVerification/reset_password.html', context)
 
 def blog_writers_profile(request, id):
-    pass
+    context = {}
+    return render(request, 'AuthenticationAndVerification/show_profile.html', context)
 
-def edit_profile(request, id):
-    pass
+def edit_profile(request):
+    context = {}
+    return render(request, 'AuthenticationAndVerification/edit_profile.html', context)
 
 
 
