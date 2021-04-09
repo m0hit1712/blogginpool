@@ -39,7 +39,10 @@ def blog_writers_dashboard(request):
                 context["id"] = user.id
                 written_by = user.first_name+" "+user.last_name
                 blogs = BlogModel.objects.filter(written_by=written_by)
+                context["user_email"] = user.email
                 context["blogs"] = blogs
+                if not user.email_verified:
+                        context["email_not_verified"] = True 
         else:
                 return redirect('login')
         return render(request, 'BlogStation/blog_writers_dashboard.html', context)
@@ -47,12 +50,15 @@ def blog_writers_dashboard(request):
 def create_blog(request):
         context = {}
         if "log_key" in request.session:
-                context["authenticated"] = True
+                context["loggedin"] = True
                 user = User.objects.all().filter(username=request.session['log_key']).first()
+                context["id"] = user.id
                 if request.method == 'GET':
                         tags = TagModel.objects.all()
                         context["tags"] = tags
                         context["languages"] = ['']
+                        if not user.email_verified:
+                                context["email_not_verified"] = True
                 
                 if request.method == 'POST':
                         image_url = request.POST["banner_image_url"]

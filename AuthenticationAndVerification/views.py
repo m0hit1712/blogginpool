@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.mail import EmailMultiAlternatives
 
 from .models import User
 #support class and functions
@@ -16,16 +17,15 @@ def send_the_mail(request, u, template_path, subject):
     current_site = get_current_site(request)
     email_subject = subject
     t = Token()
-    message = render_to_string(template_path, {
+    msg_plain = ""
+    html_message = render_to_string(template_path, {
         'user': User,
         'domain': current_site.domain,
         'uname': urlsafe_base64_encode(force_bytes(u.username)),
         'token': t.create_token(),
     })
-    print("called")
     to_email = u.email
-    send_mail(email_subject, message, 'mohit.djmail@gmail.com', [to_email])
-
+    send_mail(email_subject, msg_plain, 'mohit.djmail@gmail.com', [to_email], html_message=html_message)
 
 class Token:
     def create_token(self):
@@ -82,7 +82,7 @@ def login(request):
 
         for user in users:
             if user.username == uname_or_email or user.email == uname_or_email:
-                if user.password == password and user.email_verified == True:
+                if user.password == password:
                     authenticated = True
                     u = user
 
@@ -141,7 +141,6 @@ def register(request):
         if save_it:
             u.datetime = timezone.now()
             u.save()
-            print("called")
             send_the_mail(request, u, 'AuthenticationAndVerification/activate_email.html', "account activation test")
             context["verification"] = u.email
         return render(request, 'AuthenticationAndVerification/register.html', context)
@@ -206,6 +205,13 @@ def reset_password(request, uname_b64, token):
             return render(request, 'AuthenticationAndVerification/reset_password.html', context)
 
     return render(request, 'AuthenticationAndVerification/reset_password.html', context)
+
+def ajax_verify_email(request):
+    user = User.objects.all().filter(username=request.session['log_key']).first()
+    context = {}
+    send_the_mail(request, user, 'AuthenticationAndVerification/activate_email.html', "account activation test")
+    context["verification"] = user.email
+    return JsonResponse(context)
 
 def blog_writers_profile(request, id):
     context = {}

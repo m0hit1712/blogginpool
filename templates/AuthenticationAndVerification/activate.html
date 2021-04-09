@@ -15,8 +15,8 @@
 
 {% if verified %}
 <script>
-    alert("Your account is verified successfully now you can login");
-    window.location.replace("{% url 'login' %}");
+    alert("Your account is verified successfully now you can user our services from the dashboard");
+    window.location.replace("{% url 'writers_dashboard' %}");
 </script>
 {% else %}
 {{msg}}
