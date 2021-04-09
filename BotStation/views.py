@@ -153,8 +153,13 @@ def temp_register_user(number, msg):
 
     return msg
 
-def check_message(msg):
+def blog_clone_to_real():
     pass
+
+
+def blog_writing(number, msg):
+    pass
+
 
 
 

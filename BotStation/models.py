@@ -1,5 +1,5 @@
 from django.db import models
-
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 class TempUserMessage(models.Model):
@@ -19,3 +19,13 @@ class UserClone(models.Model):
         
         def __str__(self):
                 return self.contact_no
+
+
+
+
+class BlogModelClone(models.Model):
+        heading = models.TextField(max_length=80)
+        description = models.TextField(max_length=500, null=True ,blank=True)
+        body = RichTextField(blank=True)
+        draft = models.BooleanField(default=True, null=True, blank=True)
+        tags = models.TextField(max_length=2000, blank=True)

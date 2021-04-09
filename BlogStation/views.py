@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from AuthenticationAndVerification.models import User
 from .models import TagModel, BlogModel, CommentModel
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
 
@@ -193,4 +193,10 @@ def tag_blogs(request, name):
         context = {}
         return render(request, 'BlogStation/blog_tag_page.html', context)
 
+from blogthat import firebase
+
+def upload_image(request):
+        image = 'static/images/guide.png'
+        url = firebase.upload_to_firebase(image)
+        return HttpResponse(url)
 

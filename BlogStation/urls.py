@@ -14,4 +14,5 @@ urlpatterns = [
     path('dashboard/search', views.blog_search_bar, name='search_blog'),
     path('search', views.blog_search_bar, name='search_blog'),
     path('tag/<str:name>', views.tag_blogs, name='tag_blogs'),
+    path('upload_image', views.upload_image, name='upload_image'),
 ]
