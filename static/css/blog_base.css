@@ -1,3 +1,8 @@
+*{
+  padding: 0px;
+  margin: 0px;
+}
+
 .arrow_left {
   position: absolute;
   margin-top: 250px;
@@ -40,7 +45,7 @@
 }
 @media only screen and (max-width: 400px) {
   #page-container {
-    width: 120%;
+    width: 100%;
   }
   #nt-button {
     display: none;
@@ -52,7 +57,7 @@
     margin-top: 50px;
   }
   #sticky-footer{
-    width: 120%;
+    width: 100%;
   }
 }
 #notifications_inner::-webkit-scrollbar {

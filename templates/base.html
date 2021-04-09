@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blogging pool</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link
@@ -31,7 +31,7 @@
     <section>
       <nav
         class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark"
-        style="border-bottom: 3px solid #4285f4"
+        style="border-bottom: 3px solid #4285f4; width: 100%;"
       >
         <img
           class="mr-1"
@@ -149,12 +149,12 @@
       </nav>
     </section>
 
-    <div class="container-fluid justify-content-center ml-0 mr-0 p-0 mt-0" id="page-container">
+    <div class="container-fluid justify-content-center m-0 p-0" id="page-container">
       <br />
       {% block content %} {% endblock content %}
     </div>
 
-    <footer id="sticky-footer" class="py-4 mt-5 bg-dark text-white-50">
+    <footer id="sticky-footer" class="py-4 bg-dark text-white-50" style="border-top: 3px solid #4285f4;">
       <div class="container text-center text-decoration-none">
         <small
           >&copy; 2021 Copyright:<a href="{% url 'index' %}">

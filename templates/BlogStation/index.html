@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-        <div class="w-100 bg-dark row m-0" style="height: 800px; padding-top: 80px;">
+<div class="w-100 bg-dark mb-0" align="center">
+        <div class="row m-0 mt-5 main_container_inner"  style="padding-top: 80px;">
                 <div id="image_1" class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
-                        <img style="width: 100%;" class="m-0" style="opacity: 0.6;" src="{% static 'svg/image1.svg' %}">
+                        <img style="width: 100%;" class="mb-0" style="opacity: 0.6;" src="{% static 'svg/image1.svg' %}">
                 </div>
-                <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 text-light">
+                <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 text-light" id="first_text_area">
                         <div class="row">
                                 <p class="col-lg-12 text-center mt-5 mb-0 big-t">Thoughts should be expressed,</p>
                                 <p class="col-lg-12 text-center mt-0 big-t">Ideas should be implemented</p>
@@ -16,4 +17,53 @@
                         </div>
                 </div>
         </div>
+        <div class="mt-5 p-0 row main_container_inner_features" align="center" style="padding-top: 80px;">
+                <div class="row p-0 m-0 col-lg-12" align="center">
+                        <div class="col-lg-6 col-md-12 col-sm-12 row p-0 m-0 mt-4 text-center" align="center">
+                                <div class="col-lg-12">
+                                        <img height="150" src="{% static 'images/creation.png' %}">
+                                </div>
+                                <div class="col-lg-12 text-light text-center"> 
+                                        <p class="col-lg-12 text-center mb-0" style="font-size: 26px;">Powerful content creation tools</p>
+                                        <p class="col-lg-12 text-center small-t-features">
+                                                create your content in easy steps with powerfull text editor having multiple options.
+                                        </p>
+                                </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 p-0 m-0 mt-4 text-center row ">
+                                <div class="col-lg-12">
+                                        <img height="150" src="{% static 'images/real_time.png' %}">
+                                </div>
+                                <div class="col-lg-12 text-light text-center"> 
+                                        <p class="col-lg-12 text-center mb-0" style="font-size: 26px;">Real time updation</p>
+                                        <p class="col-lg-12 text-center small-t-features">
+                                                Real time updation of your content to the site without refreshing the page.
+                                        </p>
+                                </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 row p-0 m-0 mt-4 text-center">
+                                <div class="col-lg-12">
+                                        <img height="150" src="{% static 'images/whatsapp.png' %}">
+                                </div>
+                                <div class="col-lg-12 text-light text-center "> 
+                                        <p class="col-lg-12 text-center mb-0" style="font-size: 26px;">Powerful Whatsapp bot</p>
+                                        <p class="col-lg-12 text-center small-t-features">
+                                                Powerful whatsapp bot active 24 hours for rapid content updation to the site throught chats.
+                                        </p>
+                                </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 row p-0 m-0 mt-4 text-center">
+                                <div class="col-lg-12">
+                                        <img height="150" src="{% static 'images/security.png' %}">
+                                </div>
+                                <div class="col-lg-12 text-light text-center"> 
+                                        <p class="col-lg-12 text-center mb-0" style="font-size: 26px;">2-factor authentication</p>
+                                        <p class="col-lg-12 text-center small-t-features">
+                                                Whatsapp bot takes care of your account logs and notifies you on you login. 
+                                        </p>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</div>
 {% endblock %}

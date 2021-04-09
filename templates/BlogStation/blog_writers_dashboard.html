@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block content %} 
 {% if loggedin %} {% if email_not_verified %}
-<div class="container mt-2 pt-5 p-0" align="center" style="height: 900px">
+<div class="container mt-2 m-0 pt-5 p-0" align="center" style="height: 900px">
   <div class="row p-5" style="background-color: #e0e0e0" id="sent_email_before">
     <div class="col-lg-8" align="left">
       <p style="font-size: 20px">
@@ -44,7 +44,36 @@
   }
 </script>
 {% else %}
-<div class="container mt-5 pt-3 p-0">
+<div class="container mt-5 pt-3">
+
+  <h1 class="pl-3 mt-3" style="font-weight: bold">User Options</h1>
+  <hr />
+  <div id="creator_options" class="row">
+    <div class="col-lg-3 mt-3 p-2 col-md-6 col-sm-12" align="center">
+      <div
+        class="d-block bg-dark p-3 opts"
+        style="height: 250px; width: 90%; border-radius: 10px"
+      >
+        <p style="font-size: 30px" class="text-light">Create blog</p>
+        <img height="100" src="{% static 'images/create_blog.png'%}" /><br />
+        <a href="{% url 'create_blog' %}" class="btn btn-primary mt-3" target="_blank"
+          >open <i class="fa fa-external-link"></i
+        ></a>
+      </div>
+    </div>
+    <div class="col-lg-3 mt-3 p-2 col-md-6 col-sm-12" align="center">
+      <div
+        class="d-block bg-dark p-3 opts"
+        style="height: 250px; width: 90%; border-radius: 10px"
+      >
+        <p style="font-size: 30px" class="text-light">User manual</p>
+        <img height="100" src="{% static 'images/guide.png'%}" /><br />
+        <a href="{% url 'create_blog' %}" class="btn btn-primary mt-3" target="_blank"
+          >open <i class="fa fa-external-link"></i
+        ></a>
+      </div>
+    </div>
+  </div>
   {% if drafts %}
   <div class="container p-0" id="draft_blogs">
     <div class="arrow_left">
@@ -52,7 +81,8 @@
         type="button"
         id="left_draft"
         onclick="scroll_left('draft_blogs')"
-        class="btn btn-success rounded-circle scroll_left_btn"
+        class="btn btn-dark scroll_left_btn"
+        style="font-weight: bold;"
       >
         <
       </button>
@@ -62,18 +92,21 @@
         type="button"
         id="right_draft"
         onclick="scroll_right('draft_blogs')"
-        class="btn btn-success rounded-circle scroll_right_btn"
+        class="btn btn-dark scroll_right_btn"
+        style="font-weight: bold;"
       >
         >
       </button>
     </div>
-    <h2 class="mt-4" style="font-weight: bold">DRAFTS</h2>
+    <h1 class="mt-4 pl-3" style="font-weight: bold">DRAFTS</h1>
     <hr class="mb-0" />
     <div
       class="scrolling-wrapper row flex-row flex-nowrap mt-0 pt-2 pr-5 pl-5 pb-5"
       id="draft_blogs_inner"
       style="overflow-x: auto; scroll-behavior: smooth"
-    ></div>
+    >
+    <div class="col-lg-4" style="width: 200px; height: 100px;"></div>
+    </div>
   </div>
   <!-- expanding in drafts container------------------------------------------------------------------------------->
   <script>
@@ -89,6 +122,50 @@
     }
     console.log(image_url);
   </script>
+  <script>
+    function scroll_right(container_id)
+    {
+        container_id += "_inner";
+        scroll = $("#"+container_id).scrollLeft()+280;
+        $("#"+container_id).scrollLeft(scroll);
+    }
+    function scroll_left(container_id)
+    {
+        container_id += "_inner";
+        scroll = $("#"+container_id).scrollLeft()-280;
+        $("#"+container_id).scrollLeft(scroll);
+    }
+    function delete_draft(id, index)
+    {
+        $.ajax({url:'',data:{'delete_this': id}, async:true, dataType: 'json', success: function(data)
+        {
+            if('deleted' in data)
+            {
+                $('#'+'draft'+index).remove();
+                ind_drafts--;
+                if (ind_drafts == 0)
+                {
+                    $("#draft_blogs_inner").append("<div class='container w-100' align='center' style='height: 300px; background-color: #A2A2A2;'><p style='margin-top: 130px;'>You don't have any blog published yet</p><br><button type='button' onclick='open_blog_create()' class='btn btn-dark'>CREATE ONE</button></div>");
+                }
+                alert("The draft is succefully deleted");
+            }
+        }});
+    }
+  </script>
+  <script>
+    function expand_to_draft(index, image_url, heading, content, id)
+    {
+        card_id = "draft"+index
+        $("#draft_blogs_inner").prepend("<div class='col-lg-4 mt-3 p-0 col-xs-12 mr-4 shadow d-flex justify-content-center' style='max-width: 16rem; min-width: 16rem; max-height: 390px; min-height: 390px;' id='"+card_id+"'></div>");
+        inner_card_id = card_id + "_inner";
+        $("#"+card_id).append("<div class='card border-0 p-0 m-0' style='width: 100%;' id='"+inner_card_id+"'></div>");
+        $("#"+inner_card_id).append("<div class='card_image embed-responsive embed-responsive-16by9 border'><img class='card-img-top embed-responsive-item' src='"+image_url+"' alt='Card image cap'></div>");
+        $("#"+inner_card_id).append("<div class='container p-2 card_content'><h5 class='text-justify' style='max-height: 50px; min-height: 50px; overflow-y: hidden;'>"+heading+"</h5><hr class='m-2'><p class='text-justify scroll_para' style='max-height: 100px; min-height: 100px; font-size: 13px; overflow-y: scroll;'>"+content+"</p></div>")
+        var url_mask = "{% url 'edit_blog' id_=12345 %}".replace(/12345/, id.toString());
+        $("#"+inner_card_id).append("<div class='container pr-4 pl-4 pb-4'><div class='w-25 float-left'><button class='btn btn-danger' onclick='delete_draft("+id.toString()+","+index+")'>delete</button></div><div class='w-50 float-right'><a type='button' href='"+url_mask+"' class='btn btn-dark float-right'>edit</a></div></div>")
+    }
+  </script>
+
   <script>
     expand_to_draft(ind_drafts, image_url, `{{draft.heading}}`, `{{draft.description}}`, {{draft.id}});
     ind_drafts++;
@@ -110,36 +187,10 @@
     });
   </script>
   {% endif %}
-  <h1 class="pl-3 mt-3" style="font-weight: bold">User Options</h1>
-  <hr />
-  <div id="creator_options" class="row">
-    <div class="col-lg-3 mt-3 p-2 col-md-6 col-sm-12" align="center">
-      <div
-        class="d-block bg-dark p-3 opts"
-        style="height: 250px; width: 90%; border-radius: 10px"
-      >
-        <p style="font-size: 30px" class="text-light">Create blog</p>
-        <img height="100" src="{% static 'images/create_blog.png'%}" /><br />
-        <a href="{% url 'create_blog' %}" class="btn btn-primary mt-3"
-          >open <i class="fa fa-external-link"></i
-        ></a>
-      </div>
-    </div>
-    <div class="col-lg-3 mt-3 p-2 col-md-6 col-sm-12" align="center">
-      <div
-        class="d-block bg-dark p-3 opts"
-        style="height: 250px; width: 90%; border-radius: 10px"
-      >
-        <p style="font-size: 30px" class="text-light">User manual</p>
-        <img height="100" src="{% static 'images/guide.png'%}" /><br />
-        <a href="{% url 'create_blog' %}" class="btn btn-primary mt-3"
-          >open <i class="fa fa-external-link"></i
-        ></a>
-      </div>
-    </div>
-  </div>
 
-  <div id="published_blogs" class="pt-2 w-100">
+
+
+  <div id="published_blogs" class="pt-2 w-100 pb-5 mb-3">
     <h1 class="pl-3 mt-3" style="font-weight: bold">Published blogs</h1>
     <hr />
     <div class="row p-0 m-0" id="blogs_container">
@@ -172,10 +223,11 @@
                             $("#"+card_id).append("<div class='card border-0 p-0 m-0' style='width: 100%;' id='"+card_id_inner+"'></div>")
                             var image = "{{blog.banner_image_url}}";
                             $("#"+card_id_inner).append("<div class='card_image embed-responsive embed-responsive-16by9 border'><img class='card-img-top embed-responsive-item' src='"+image+"' alt='Card image cap'></div>")
-                            $("#"+card_id_inner).append("<div class='container p-2 card_content'><h6 class='text-justify' style='max-height: 50px; min-height: 50px; overflow-y: hidden; '>"+`{{blog.heading}}`+"</h6><hr class='m-2'><p class='text-justify scroll_para' style='max-height: 100px; min-height: 100px; font-size: 13px; overflow-y: scroll;'>"+`{{blog.description}}`+"</p></div>");
+                            $("#"+card_id_inner).append("<div class='container p-2 card_content'><h6 class='text-justify' style='max-height: 40px; min-height: 40px; overflow-y: hidden; '>"+`{{blog.heading}}`+"</h6><hr class='m-2'><p class='text-justify scroll_para' style='max-height: 90px; min-height: 90px; font-size: 13px; overflow-y: scroll;'>"+`{{blog.description}}`+"</p></div>");
                             var id = "{{blog.id}}";
                             var url_mask = "{% url 'blog_view' id_=12345 %}".replace(/12345/, id.toString());
-                            $("#"+card_id_inner).append("<div class='container'><div class='float-left w-50 pr-3'><div class='w-100 m-0 row'><i class='fa fa-thumbs-up col-sm-inline m-auto' style='color: #5B6068; font-size: 20px;'></i><i class='fa fa-comment-o col-sm-inline p-0 m-auto' style='color: #5B6068; font-size: 20px;'></i><i class='fa fa-eye col-sm-inline m-auto p-0' style='color: #5B6068; font-size: 20px;'></i> </div><div class='w-100 m-0 inline row'><i class='m-auto col-sm-inline' style='color: #5B6068; font-size: 12px;'><b>"+"{{blog.likes}}"+"</b></i><i class='m-auto col-sm-inline' style='color: #5B6068; font-size: 12px;'><b>"+"{{blog.comments}}"+"</b></i><i class='m-auto col-sm-inline' style='color: #5B6068; font-size: 12px;'><b>"+"{{blog.views}}"+"</b></i></div></div><div class='float-right'><a type='button' href='"+url_mask+"' class='btn btn-dark float-right'>read</a></div></div>");
+                            var url_mask_edit = `/edit/blog/${id.toString()}`
+                            $("#"+card_id_inner).append("<div class='container'><div class='float-left w-50 pr-3'><div class='w-100 m-0 row'><i class='fa fa-thumbs-up col-sm-inline m-auto' style='color: #5B6068; font-size: 20px;'></i><i class='fa fa-comment-o col-sm-inline p-0 m-auto' style='color: #5B6068; font-size: 20px;'></i><i class='fa fa-eye col-sm-inline m-auto p-0' style='color: #5B6068; font-size: 20px;'></i> </div><div class='w-100 m-0 inline row'><i class='m-auto col-sm-inline' style='color: #5B6068; font-size: 12px;'><b>"+"{{blog.likes}}"+"</b></i><i class='m-auto col-sm-inline' style='color: #5B6068; font-size: 12px;'><b>"+"{{blog.comments}}"+"</b></i><i class='m-auto col-sm-inline' style='color: #5B6068; font-size: 12px;'><b>"+"{{blog.views}}"+"</b></i></div></div><div class='float-right'><a type='button' href='"+url_mask+"' class='btn btn-dark float-left'>read</a></div></div><a type='button' href='"+url_mask_edit+"' class='btn btn-dark mt-2 float-right'>EDIT <i class='fa fa-edit'></i></a></div></div>");
                     {% endfor %}
             {% endif %}
     }
@@ -183,4 +235,6 @@
   </script>
 </div>
 
-{% endif %} {% endif %} {% endblock %}
+{% endif %} 
+{% endif %} 
+{% endblock %}

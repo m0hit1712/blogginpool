@@ -5,13 +5,32 @@
   padding-right: 200px;
   padding-left: 200px;
 }
+.main_container_inner{
+  width: 80%;
+}
+.main_container_inner_features{
+  width: 60%;
+}
+.small-t-features{
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .small-t, .small-t-features{
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
+
+
 @media only screen and (max-width: 1000px) {
   .big-t {
     font-size: 30px;
   }
-  .small-t {
-    padding-right: 0px;
-    padding-left: 0px;
+  #main_container_inner, .main_container_inner_features{
+    width: 100%;
+    padding: 0px;
   }
 }
 
@@ -19,7 +38,11 @@
   .big-t {
     font-size: 25px;
   }
-  #image_1 {
-    padding-bottom: 0px;
+  #image_1{
+    height: 200px;
+    overflow: hidden;
   }
 }
+
+
+

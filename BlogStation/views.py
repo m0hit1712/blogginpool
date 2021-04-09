@@ -28,21 +28,34 @@ def main_blog_page(request):
 
 def blog_view(request, id_):
         context = {}
+        if "log_key" in request.session:
+                context["authenticated"] = True
+
+        blog = BlogModel.objects.all().filter(id=int(id_)).first()
+        context["blog"] = blog
         return render(request, 'BlogStation/blog_view.html', context)
 
 def blog_writers_dashboard(request):
         context = {}
         context["dashboard"] = True
         if "log_key" in request.session:
+                if "delete_this" in request.GET:
+                        print("deletion called")
+                        data = {"deleted": True}
+                        blog = BlogModel.objects.filter(id=request.GET["delete_this"]).first()
+                        blog.delete()
+                        return JsonResponse(data)
                 context["loggedin"] = True
                 user = User.objects.filter(username=request.session["log_key"]).first()
                 context["id"] = user.id
                 written_by = user.first_name+" "+user.last_name
-                blogs = BlogModel.objects.filter(written_by=written_by)
+                blogs = BlogModel.objects.filter(written_by=written_by, draft=False)
+                drafts = BlogModel.objects.filter(written_by=written_by, draft=True)
                 context["user_email"] = user.email
                 context["blogs"] = blogs
+                context["drafts"] = drafts
                 if not user.email_verified:
-                        context["email_not_verified"] = True 
+                        context["email_not_verified"] = True
         else:
                 return redirect('login')
         return render(request, 'BlogStation/blog_writers_dashboard.html', context)
