@@ -16,11 +16,10 @@ class UserClone(models.Model):
         first_name = models.CharField(max_length=30, null=True)
         last_name = models.CharField(max_length=30, null=True)
         email = models.CharField(max_length=100, null=True, default=None)
-        
+        profile_image_path = models.CharField(max_length=2000, null=True, default=None)
+
         def __str__(self):
                 return self.contact_no
-
-
 
 
 class BlogModelClone(models.Model):
