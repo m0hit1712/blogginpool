@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMultiAlternatives
+from BlogStation.models import BlogModel
 
 from .models import User
 #support class and functions
@@ -213,12 +214,47 @@ def ajax_verify_email(request):
     context["verification"] = user.email
     return JsonResponse(context)
 
-def blog_writers_profile(request, id):
+def blog_writers_profile(request, uname):
     context = {}
+    user = User.objects.filter(username=uname).first()
+    if user:
+        context["fullname"] = user.first_name + " " + user.last_name
+        context["username"] = user.username
+        if user.profile_image:
+            context["image_url"] = user.profile_image
+        if user.about:
+            context["about"] = user.about.paragraph 
+            context["contact_email"] = user.about.contact_email
+            context["instagram_profile"] = user.about.instagram_profile
+            context["facebook_profile"] = user.about.facebook_profile
+            context["website_link"] = user.about.website_link
+            context["twitter_profile"] = user.about.twitter_profile
+
+        written_by = user.username
+        blogs = BlogModel.objects.filter(written_by=written_by)
+        context["blogs"] = blogs
+    else:
+        context["user_not_found"] = True
     return render(request, 'AuthenticationAndVerification/show_profile.html', context)
 
 def edit_profile(request):
     context = {}
+    if "log_key" in request.session:
+        user = User.objects.filter(username=request.session['log_key']).first()
+        if user:
+            context["fullname"] = user.first_name + " " + user.last_name
+            context["username"] = user.username
+            if user.profile_image:
+                context["image_url"] = user.profile_image
+            if user.about:
+                context["about"] = user.about.paragraph
+                context["contact_email"] = user.about.contact_email
+                context["instagram_profile"] = user.about.instagram_profile
+                context["facebook_profile"] = user.about.facebook_profile
+                context["website_link"] = user.about.website_link
+                context["twitter_profile"] = user.about.twitter_profile
+    else:
+        context["user_not_found"] = True
     return render(request, 'AuthenticationAndVerification/edit_profile.html', context)
 
 

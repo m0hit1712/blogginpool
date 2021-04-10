@@ -48,7 +48,7 @@ def blog_writers_dashboard(request):
                 context["loggedin"] = True
                 user = User.objects.filter(username=request.session["log_key"]).first()
                 context["id"] = user.id
-                written_by = user.first_name+" "+user.last_name
+                written_by = user.username
                 blogs = BlogModel.objects.filter(written_by=written_by, draft=False)
                 drafts = BlogModel.objects.filter(written_by=written_by, draft=True)
                 context["user_email"] = user.email
@@ -78,7 +78,7 @@ def create_blog(request):
                         heading = request.POST["blog_heading"]
                         body = request.POST["editor"]
                         description_came = request.POST["description"]
-                        written_by = user.first_name+" "+user.last_name
+                        written_by = user.username
                         tags_came = tags_came = request.POST["tags"].split(',')
                         tags = [tag.name for tag in TagModel.objects.all()]
 
@@ -105,7 +105,7 @@ def save_draft(request):
 
         tags = [tag.name for tag in TagModel.objects.all()]
 
-        written_by = user.first_name+" "+user.last_name
+        written_by = user.username
 
         if "existing_blog" in request.GET:
                 id_ = int(request.GET["blog_id"])
@@ -139,7 +139,7 @@ def edit_blog(request, id_):
                 if request.method == "GET":
                         tags = TagModel.objects.all()
                         context["tags"] = tags
-                        written_by = user.first_name+" "+user.last_name
+                        written_by = user.username
                         blog = BlogModel.objects.all().filter(id=id_).first()
                         if blog.written_by == written_by:
                                 context["blog"] = blog
@@ -149,7 +149,7 @@ def edit_blog(request, id_):
                         heading = request.POST["blog_heading"]
                         body = request.POST["editor"]
                         description_came = request.POST["description"]
-                        written_by = user.first_name+" "+user.last_name
+                        written_by = user.username
                         tags_came = tags_came = request.POST["tags"].split(',')
                         tags = [tag.name for tag in TagModel.objects.all()]
 
